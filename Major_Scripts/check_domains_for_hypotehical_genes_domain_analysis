@@ -1,0 +1,88 @@
+#!/usr/bin/python
+#Great Script to find domains in zehnderi depending on the gene input number (locus tag) and in S wolfei
+import os, sys ,fnmatch , numpy, xlrd
+
+def findFiles (path, filter):
+    for root, dirs, files in os.walk(path):
+        for file in fnmatch.filter(files, filter):
+            yield os.path.join(root, file)
+
+#a = sys.argv[1]
+file1 = open ("/Users/NikolasStrepis/Documents/PhD_Projects/Genomic_comparison_zehnderi_wolfei/Tables_for_manuscript/FA_degradation_domains_complete.csv")
+file2 = open("/Users/NikolasStrepis/Documents/PhD_Projects/Genomic_comparison_zehnderi_wolfei/Tables_for_manuscript/Tables_for_enzymes.csv")
+
+
+list1=[]
+list2=[]
+
+dict1={}
+dict2={}
+
+
+for index, lines in enumerate(file1):
+	if "Locus" not in lines:
+		genea= lines.strip().split(";")[3]
+		genea = genea.split(",")
+
+		for i in genea:
+			
+			dict1[i]=lines
+
+		geneb=lines.strip().split(";")[4]
+		geneb=geneb.split(",")
+
+		for i in geneb:
+
+			dict2[i]=lines
+
+
+
+list3=[]
+list4=[]
+
+for index, lines in enumerate(file2):
+	if "Locus" not in lines:
+	
+
+		here= lines.strip().split(";")[4].split(",")
+
+		list1= list1 + here
+		
+
+		herea= lines.strip().split(";")[6].split(",")
+		list2=list2+herea
+
+listno=[]		
+for asd in list1:
+		no = asd.replace(" ","")
+		listno=listno + [no]
+
+zen=""
+print "Zehnderi"
+for i in dict1:
+	
+	if i not in listno :
+		print i
+		zen = zen + "," + i
+
+print "Zenderi, ", zen 
+
+
+
+print "wolfei time"
+list2no=[]
+
+for asd in list2:
+		no = asd.replace(" ","")
+		list2no=list2no +[no]
+zen =""
+for i in dict2:
+
+
+	if i.replace(" ","") not in list2no:
+		print i
+		zen = zen + "," + i
+
+print "Wolfei, ",  zen
+
+
